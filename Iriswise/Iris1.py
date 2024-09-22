@@ -79,7 +79,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 
 # Load the dataset
-dataset = pd.read_csv("Iris.csv")
+dataset = pd.read_csv("Iriswise/Iris.csv")
 
 # Prepare the features and target variable
 x = dataset.drop(["Species", "Id"], axis=1)
@@ -90,9 +90,9 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_
 knn = KNeighborsClassifier(n_neighbors=3)
 knn.fit(x_train, y_train)
 
-# Save the model
-with open("classifier.pkl", "wb") as pickle_out:
-    joblib.dump(knn, pickle_out)
+# # Save the model
+# with open("classifier.pkl", "wb") as pickle_out:
+#     joblib.dump(knn, pickle_out)
 
 # Streamlit UI
 st.set_page_config(page_title="Iris Species Predictor", page_icon="🌸", layout="wide")
@@ -243,7 +243,7 @@ with st.form("prediction_form"):
 # Prediction and output
 if submit_button:
     with st.spinner("Predicting..."):
-        model = joblib.load("classifier.pkl")
+        model = joblib.load("Iriswise/classifier.pkl")
         x_input = np.array([Sepal_length, Sepal_width, Petal_length, Petal_width])
         if any(x_input <= 0):
             st.warning("⚠️ Input values must be greater than 0")
@@ -251,9 +251,9 @@ if submit_button:
             prediction = model.predict([x_input])
             
             species_images = {
-                'Iris-setosa': 'assets/Irissetosa1.jpg',
-                'Iris-versicolor': 'assets/Versicolor.webp',
-                'Iris-virginica': 'assets/virgina.jpg'
+                'Iris-setosa': 'Iriswise/assets/Irissetosa1.jpg',
+                'Iris-versicolor': 'Iriswise/assets/Versicolor.webp',
+                'Iris-virginica': 'Iriswise/assets/virgina.jpg'
             }
             
             st.success(f"🎉 Predicted Species: **{prediction[0]}**")
