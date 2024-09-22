@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load the dataset
-dataset = pd.read_csv("Student_performance_data _.csv")
+dataset = pd.read_csv("GradeCast/Student_performance_data _.csv")
 
 # Feature Engineering
 dataset['StudyGradeInteraction'] = dataset['StudyTimeWeekly'] * dataset['GradeClass']
@@ -76,7 +76,7 @@ with st.form("prediction_form"):
 
 # Prediction and output
 if submit_button:
-    model = joblib.load("student_gpa_model.pkl")
+    model = joblib.load("GradeCast/student_gpa_model.pkl")
     x = np.array([StudentID, Age, StudyTimeWeekly, GradeClass, StudyTimeWeekly * GradeClass])
     if any(x <= 0):
         st.warning("⚠️ Input values must be greater than 0")
