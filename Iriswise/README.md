@@ -1,12 +1,12 @@
 # 🌼 IrisWise - Iris Species Prediction Model 🌺
 
-Welcome to **IrisWise** – Welcome to the Iris Species Prediction app! Enter the details below to predict the species of an Iris flower based on its features. This application uses a K-Nearest Neighbors classification model to predict the species.
+Welcome to **IrisWise**! This application predicts the species of an Iris flower based on its features using various machine learning models. Currently, it implements K-Nearest Neighbors, with plans to include more models like Random Forest, SVM, and Logistic Regression.
 
 ## Features
 
 - **Interactive User Interface:** 🖥️ Enjoy a sleek, modern UI with custom styling, animations, and colorful themes, enhancing the overall user experience. The interface is designed to be intuitive and engaging.
 
-- **Multiple Machine Learning Models:** 📊 Choose from a variety of models, including K-Nearest Neighbors, Random Forest, SVM, and Logistic Regression, each evaluated for performance to give you the best possible prediction. **(Working On It...)**
+- **Multiple Machine Learning Models:** 📊 Choose from a variety of models, including K-Nearest Neighbors, Random Forest, SVM, Logistic Regression, and more. Each model is evaluated for performance to provide the best possible prediction.
 
 - **Real-time Predictions:** 🌸 Input the features of the Iris flower (sepal length, sepal width, petal length, petal width) and get an instant prediction of the species.
 
@@ -18,37 +18,43 @@ Welcome to **IrisWise** – Welcome to the Iris Species Prediction app! Enter th
 
 ## Demo
 
-Check out the live demo on [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://iriswise.streamlit.app/)
+**Check out the live demo on :** [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://iriswise.streamlit.app/)
 
 ## Preview
 
 ![IrisWise Screenshot](https://github.com/user-attachments/assets/c6eb8853-cdbf-490d-808e-321f54aac302)
 
+---
 
-## Usage
+## 🚀 How to Use Iriswise
 
-Get started with IrisWise by following these simple steps:
-
-1. Clone the repository to your local machine:
-
+1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/Hunterdii/Iriswise.git
+    git clone https://github.com/Hunterdii/AI-Nexus.git
    ```
 
-2. Install the required dependencies:
+2. **Navigate to ObjexVision App Directory**:
+   ```bash
+   cd AI-Nexus/Iriswise
+   ```
 
+3. **Install the Required Dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Run the Streamlit app:
-
+4. **Run the ObjexVision Streamlit App**:
    ```bash
-   streamlit run app.py
+   streamlit run Iris1.py
    ```
 
-4. Open your browser and go to `http://localhost:8501` to start predicting Iris species.
+5. **Open the App**: Open your browser and go to `http://localhost:8501` to use the ObjexVision app.
+
+---
+
 
 ## Customization
 
 You can customize the app to your liking by modifying the CSS for styling, updating the machine learning models, or adding new features. The code is well-documented to help you navigate and tweak the application as needed.
+
+Feel free to explore and enhance the project as you see fit!
