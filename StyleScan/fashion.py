@@ -21,8 +21,8 @@ fas_data=keras.datasets.fashion_mnist
 (train_images,train_labels),(test_images,test_labels)=fas_data.load_data()
 
 # Load models
-seq_model = tf.keras.models.load_model("Seq_model.h5")
-cnn_model = tf.keras.models.load_model("cnn_model.h5")
+seq_model = tf.keras.models.load_model("StyleScan/Seq_model.h5")
+cnn_model = tf.keras.models.load_model("StyleScan/cnn_model.h5")
 
 class_names = ['👕 Tshirt/Top', '👖 Trouser', '🧥 Pullover', '👗 Dress', '🧥 Coat',
                '👡 Sandal', '👔 Shirt', '👟 Sneaker', '👜 Bag', '👢 Ankle boot']
@@ -121,6 +121,11 @@ with st.sidebar:
     working_demo_checked = st.checkbox('🎥 Working Demo')
     contact_us_checked = st.checkbox('📞 Contact Us')
 
+    # Contact information
+    st.markdown("<hr>", unsafe_allow_html=True)
+    st.markdown('Contact us at: [**Hunterdii**](https://www.linkedin.com/in/het-patel-8b110525a/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)')
+
+
 def show_loader():
     with st.spinner("Loading model..."):
         time.sleep(2)  # Simulating a delay for loading
@@ -137,18 +142,18 @@ def explore_data(train_images, train_labels, test_images):
 # Function to show CNN Model Summary
 def CNN_model_summary():
     st.markdown("### 🧠 **CNN Model Summary**")
-    img = Image.open("cnn_summary.png")
+    img = Image.open("StyleScan/cnn_summary.png")
     st.image(img)
 
 # Function to show Sequential Model Summary
 def Seq_model_Summary():
     st.markdown("### 📜 **Sequential Model Summary**")
-    img = Image.open("Seq_summary.png")
+    img = Image.open("StyleScan/Seq_summary.png")
     st.image(img)
 
 # Graph plotting functions
 def seq_history_graph():
-    with open('seq_trainHistory', 'rb') as infile:
+    with open('StyleScan/seq_trainHistory', 'rb') as infile:
         history = pickle.load(infile)
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
     train_acc = history['accuracy']
@@ -169,7 +174,7 @@ def seq_history_graph():
     st.pyplot(fig)
 
 def cnn_history_graph():
-    with open('cnntrainHistory', 'rb') as infile:
+    with open('StyleScan/cnntrainHistory', 'rb') as infile:
         history = pickle.load(infile)
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
     train_acc = history['accuracy']
@@ -192,12 +197,12 @@ def cnn_history_graph():
 # Architecture Images
 def cnn_archi():
     st.markdown("### 🧠 **CNN Model Architecture**")
-    img = Image.open('cnn_model_architecture.png')
+    img = Image.open('StyleScan/cnn_model_architecture.png')
     st.image(img)
 
 def seq_archi():
     st.markdown("### 📜 **Sequential Model Architecture**")
-    img = Image.open('seq_model_architecture.png')
+    img = Image.open('StyleScan/seq_model_architecture.png')
     st.image(img)
 
 if about_data_checked:
@@ -265,20 +270,20 @@ if demo_images_checked:
     st.write("🖼️ Please upload the following types of clothes for classification:")
     
     images = [
-    ("bag.jpeg", "👜 Bag"),
-    ("Sneaker.png", "👟 Sneaker"),
-    ("snicker.jpg", "👟 Snicker"),
-    ("coat.jpg", "🧥 Coat"),
-    ("Trouser.jpeg", "👖 Trouser"),
-    ("Dress.jpeg", "👗 Dress"),
-    ("Pant.jpeg", "🩳 Pant"),
-    ("Blazer.jpeg", "🧥 Blazer"),
-    ("shirt.jpg", "👚 Shirt"),
-    ("T-shirt.jpeg", "👕 T-Shirt"), 
+    ("StyleScan/Demo Images/bag.jpeg", "👜 Bag"),
+    ("StyleScan/Demo Images/Sneaker.png", "👟 Sneaker"),
+    ("StyleScan/Demo Images/snicker.jpg", "👟 Snicker"),
+    ("StyleScan/Demo Images/coat.jpg", "🧥 Coat"),
+    ("StyleScan/Demo Images/Trouser.jpeg", "👖 Trouser"),
+    ("StyleScan/Demo Images/Dress.jpeg", "👗 Dress"),
+    ("StyleScan/Demo Images/Pant.jpeg", "🩳 Pant"),
+    ("StyleScan/Demo Images/Blazer.jpeg", "🧥 Blazer"),
+    ("StyleScan/Demo Images/shirt.jpg", "👚 Shirt"),
+    ("StyleScan/Demo Images/T-shirt.jpeg", "👕 T-Shirt"), 
     ]
  
     for img_path, label in images:
-        image = Image.open(f"Demo Images/{img_path}").resize((180, 180))
+        image = Image.open(img_path).resize((180, 180))
         st.image(image, caption=label)
 
 # Pretrained Network Section
@@ -287,13 +292,23 @@ if pretrained_network_checked:
 
 # Working Demo Section
 if working_demo_checked:
-    st.info("🎥 Working demo will be updated soon!")
+    st.markdown("---")  # Add a separator
+    st.header("🎥 Working Demo")
+
+    # Load and display the video
+    video_file_path = 'StyleScan/streamlit-fashion-Mnist.webm'  # Update this path to your video file
+    try:
+        video_file = open(video_file_path, 'rb')
+        video_bytes = video_file.read()
+        st.video(video_bytes)
+    except FileNotFoundError:
+        st.error(f"⚠️ Video file not found: {video_file_path}. Please check the file path.")
 
 # Contact Us Section
 if contact_us_checked:
     st.markdown("---")
     st.header("📞 Contact Us")
-    contact_image = Image.open('Het Patel.jpg').resize((400, 400))
+    contact_image = Image.open('StyleScan/Het Patel.jpg').resize((400, 400))
     st.image(contact_image, caption='Het Patel')
     st.write('📧 Email: hunterdii9879@gmail.com')
 
@@ -323,7 +338,7 @@ if file_uploader is not None:
         st.bar_chart(chart_data)
 
     # Display the animated GIF after prediction
-        gif_path = "Celebrations.gif"  # Ensure this path is correct
+        gif_path = "StyleScan/Celebrations.gif"  # Ensure this path is correct
         gif_base64 = get_gif_base64(gif_path)
         st.markdown(
         f"""

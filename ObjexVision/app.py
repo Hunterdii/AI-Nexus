@@ -93,7 +93,7 @@ class_names = [
 # Load model
 @st.cache_resource
 def load_my_model():
-    model = tf.keras.models.load_model("Cifar_10-Object-Recognition/final_model1.h5")
+    model = tf.keras.models.load_model("ObjexVision/final_model1.h5")
     return model
 
 model = load_my_model()
