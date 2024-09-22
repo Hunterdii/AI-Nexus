@@ -1,0 +1,8 @@
+numpy
+pandas
+Pillow
+streamlit
+tensorflow
+requests
+streamlit-lottie
+matplotlib>=3.0.0
