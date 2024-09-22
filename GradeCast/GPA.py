@@ -4,14 +4,13 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, r2_score, confusion_matrix, ConfusionMatrixDisplay
-import pickle
-import streamlit as st
 import joblib
+import streamlit as st
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load the dataset
-dataset = pd.read_csv("GradeCast/Student_performance_data _.csv")
+dataset = pd.read_csv("GradeCast/Student_performance_data _.csv")  # Corrected filename
 
 # Feature Engineering
 dataset['StudyGradeInteraction'] = dataset['StudyTimeWeekly'] * dataset['GradeClass']
@@ -36,14 +35,11 @@ best_knn_regressor = grid_search.best_estimator_
 best_knn_regressor.fit(x_train_scaled, y_train)
 
 # Save the model
-pickle_out = open("student_gpa_model.pkl", "wb")
-pickle.dump(best_knn_regressor, pickle_out)
-pickle_out.close()  
+joblib.dump(best_knn_regressor, "GradeCast/student_gpa_model.pkl")
 
 # Streamlit UI
 st.set_page_config(page_title="Student GPA Predictor", page_icon="🎓", layout="wide")
 st.title("🎓 Student GPA Prediction App")
-
 
 st.markdown("""
     Welcome to the enhanced Student GPA Prediction app! This application uses a K-Nearest Neighbors regression model with hyperparameter tuning to predict the GPA of a student based on various characteristics. 
@@ -57,13 +53,11 @@ with st.sidebar:
     
     n_neighbors = st.slider("Number of Neighbors (K in KNN)", 1, 20, best_knn_regressor.n_neighbors)
     best_knn_regressor.n_neighbors = n_neighbors
-    best_knn_regressor.fit(x_train_scaled, y_train)  
 
     show_dataset = st.checkbox("Show Dataset Overview", value=True)
     show_corr_heatmap = st.checkbox("Show Feature Correlation Heatmap", value=True)
     show_scatterplot = st.checkbox("Show GPA vs Study Time Weekly", value=True)
     show_performance = st.checkbox("Show Model Performance", value=True)
-
 
 # Input form
 with st.form("prediction_form"):
@@ -76,12 +70,13 @@ with st.form("prediction_form"):
 
 # Prediction and output
 if submit_button:
-    model = joblib.load("GradeCast/student_gpa_model.pkl")
-    x = np.array([StudentID, Age, StudyTimeWeekly, GradeClass, StudyTimeWeekly * GradeClass])
-    if any(x <= 0):
+    model = joblib.load("GradeCast/student_gpa_model.pkl")  # Ensure this path is correct
+    x_input = np.array([StudentID, Age, StudyTimeWeekly, GradeClass, StudyTimeWeekly * GradeClass])
+    
+    if any(x_input <= 0):
         st.warning("⚠️ Input values must be greater than 0")
     else:
-        x_scaled = scaler.transform([x])
+        x_scaled = scaler.transform([x_input])
         predicted_gpa = model.predict(x_scaled)
         st.success(f"🎉 Predicted GPA: **{predicted_gpa[0]:.6f}**")
 
