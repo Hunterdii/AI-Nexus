@@ -76,7 +76,7 @@ with st.form("prediction_form"):
 
 # Prediction and output
 if submit_button:
-    model = joblib.load("student_gpa_model.pkl")
+    model = joblib.load("GradeCast/student_gpa_model.pkl")
     x = np.array([StudentID, Age, StudyTimeWeekly, GradeClass, StudyTimeWeekly * GradeClass])
     if any(x <= 0):
         st.warning("⚠️ Input values must be greater than 0")
