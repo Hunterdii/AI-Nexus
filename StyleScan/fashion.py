@@ -3,7 +3,6 @@ import streamlit as st
 import matplotlib.pyplot as plt
 from PIL import Image
 import io
-import os
 from tensorflow import keras
 import cnn_model
 import Seq_model
@@ -140,26 +139,16 @@ def explore_data(train_images, train_labels, test_images):
     st.write('🧑‍🏫 Training Classes:', len(np.unique(train_labels)))
     st.write('🧑‍🔬 Testing Classes:', len(np.unique(test_images)))
 
-# Function to show CNN Model Summary
 def CNN_model_summary():
     st.markdown("### 🧠 **CNN Model Summary**")
-    img_path = "StyleScan/cnn_summary.png"
-    if os.path.exists(img_path):
-        img = Image.open(img_path).resize((180, 180))
-        st.image(img)
-    else:
-        st.error(f"Image file not found: {img_path}")
-
+    img = Image.open("StyleScan/cnn_summary.png")
+    st.image(img)
 
 # Function to show Sequential Model Summary
 def Seq_model_Summary():
     st.markdown("### 📜 **Sequential Model Summary**")
-    img_path = "StyleScan/Seq_summary.png"
-    if os.path.exists(img_path):
-        img = Image.open(img_path).resize((180, 180))
-        st.image(img)
-    else:
-        st.error(f"Image file not found: {img_path}")
+    img = Image.open("StyleScan/Seq_summary.png")
+    st.image(img)
 
 
 # Graph plotting functions
