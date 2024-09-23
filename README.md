@@ -1,7 +1,3 @@
-Here's a combined README for your **AI Nexus** repository, featuring all the apps you've developed so far. This README covers each project, outlines their features, and provides installation and usage instructions:
-
----
-
 # 🤖 AI Nexus - Multi-Purpose AI/ML Hub
 
 **AI Nexus** is a central repository that hosts multiple AI/ML projects under one roof. From image classification to healthcare predictions, explore a diverse range of applications powered by advanced machine learning algorithms.
