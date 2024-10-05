@@ -104,9 +104,9 @@
 | **Project**                                          | **Live Link**                                                                                                          |
 |------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
 | **👗 StyleScan - Fashion MNIST Image Classification** | [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://stylescan.streamlit.app/) |
-| **🩺 GlycoTrack - Advanced Diabetes Prediction**      | [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://glycotrack.streamlit.app/)|
+| **🩺 GlycoTrack - Advanced Diabetes Prediction(Deployment error, Locally Working)**      | [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://glycotrack.streamlit.app/)|
 | **🧮 DigitSense - MNIST Handwritten Digit Classifier**| [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://predictadigit.streamlit.app/)|
-| **🌸 IrisWise - Iris Species Classification**        | [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://iriswise.streamlit.app/) |
+| **🌸 IrisWise - Iris Species Classification(Deployment error, Locally Working)**        | [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://iriswise.streamlit.app/) |
 | **🖼️ ObjexVision - CIFAR-10 Object Recognition**      | [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://pictoverse.streamlit.app/)|
 | **🎓 GradeCast - GPA Prediction Model**               | [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://gradecast.streamlit.app/) |
 
