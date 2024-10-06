@@ -21,9 +21,13 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_
 knn = KNeighborsClassifier(n_neighbors=3)
 knn.fit(x_train, y_train)
 
-# # Save the model
-# with open("classifier.pkl", "wb") as pickle_out:
-#     joblib.dump(knn, pickle_out)
+# Save the model if not saved already
+model_file = "Iriswise/classifier.pkl"
+try:
+    knn_model = joblib.load(model_file)
+except (FileNotFoundError, AttributeError):
+    joblib.dump(knn, model_file)
+    knn_model = knn  # Save it again and load it
 
 # Streamlit UI
 st.set_page_config(page_title="Iris Species Predictor", page_icon="🌸", layout="wide")
@@ -75,7 +79,7 @@ st.markdown("""
         font-size: 1.2em;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
-            .tooltip {
+    .tooltip {
         position: relative;
          display: inline-block;
          cursor: pointer;
@@ -100,7 +104,6 @@ st.markdown("""
          visibility: visible;
          opacity: 1;
      }
-
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 """, unsafe_allow_html=True)
@@ -111,49 +114,9 @@ st.markdown('<div class="header"><h2>🌼 Welcome to the Iris Species Prediction
 with st.sidebar:
     st.header("🔧 Settings")
     st.markdown("Adjust the app settings below:")
-
-
-    st.markdown("""
-    <style>
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-        }
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 220px;
-            background-color: #555;
-            color: #fff;
-            text-align: center;
-            border-radius: 5px;
-            padding: 5px 0;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%; /* Adjust as needed */
-            left: 50%;
-            margin-left: -110px; /* Adjust as needed */
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-    </style>
-    <div style="display: flex; align-items: center; justify-content: center;">
-        <div class="tooltip">
-            Number of Neighbors (K in KNN)
-            <span class="tooltiptext">The number of nearest neighbors to use for classification. Higher values can improve accuracy but may increase computation time.</span>
-        </div>
-    </div>
-""", unsafe_allow_html=True)
-    
-
-# Number of neighbors for KNN
     n_neighbors = st.slider("Neighbors", 1, 15, 3)
-    knn.n_neighbors = n_neighbors
-    knn.fit(x_train, y_train)  # Re-train with new K
+    knn_model.n_neighbors = n_neighbors
+    knn_model.fit(x_train, y_train)  # Re-train with new K
 
     # Checkboxes for additional features
     show_dataset = st.checkbox("Show Dataset Overview 🗂️", value=True)
@@ -172,26 +135,14 @@ with st.form("prediction_form"):
     submit_button = st.form_submit_button(label='🌟 Predict Species')
 
 # Prediction and output
-# Streamlit App Script
-
-# Prediction and output
 if submit_button:
     with st.spinner("Predicting..."):
-        # Load the newly saved model
-        model = joblib.load("Iriswise/classifier.pkl")
-        
-        # Process the input and predict
         x_input = pd.DataFrame([[Sepal_length, Sepal_width, Petal_length, Petal_width]], 
                                columns=x.columns)
-        
-        # Handle invalid input
         if any(x_input.values[0] <= 0):
             st.warning("⚠️ Input values must be greater than 0")
         else:
-            # Make prediction
-            prediction = model.predict(x_input)
-            
-            # Display the prediction with image
+            prediction = knn_model.predict(x_input)
             species_images = {
                 'Iris-setosa': 'Iriswise/assets/Irissetosa1.jpg',
                 'Iris-versicolor': 'Iriswise/assets/Versicolor.webp',
@@ -209,7 +160,6 @@ if show_dataset:
 
 if show_pairplot:
     with st.expander("📊 Pairplot of Iris Features", expanded=False):
-        # Ensure the dataset columns match
         fig = px.scatter_matrix(dataset, dimensions=["SepalLengthCm", "SepalWidthCm", "PetalLengthCm", "PetalWidthCm"],
                                 color="Species", symbol="Species", title="Pairplot of Iris Features",
                                 labels={"SepalLengthCm": "Sepal Length (cm)", "SepalWidthCm": "Sepal Width (cm)",
@@ -220,17 +170,17 @@ if show_pairplot:
 # Model performance metrics
 if show_performance:
     with st.expander("📈 Model Performance", expanded=False):
-        train_accuracy = knn.score(x_train, y_train) * 100
-        test_accuracy = knn.score(x_test, y_test) * 100
+        train_accuracy = knn_model.score(x_train, y_train) * 100
+        test_accuracy = knn_model.score(x_test, y_test) * 100
         
         st.markdown(f"**Train Set Accuracy:** {train_accuracy:.2f}%")
         st.markdown(f"**Test Set Accuracy:** {test_accuracy:.2f}%")
 
         if show_confusion_matrix:
             st.markdown("### 🧩 Confusion Matrix")
-            cm = confusion_matrix(y_test, knn.predict(x_test), labels=knn.classes_)
+            cm = confusion_matrix(y_test, knn_model.predict(x_test), labels=knn_model.classes_)
             fig, ax = plt.subplots(figsize=(8, 6))
-            sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=knn.classes_, yticklabels=knn.classes_, ax=ax)
+            sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=knn_model.classes_, yticklabels=knn_model.classes_, ax=ax)
             plt.xlabel('Predicted Labels')
             plt.ylabel('True Labels')
             plt.title('Confusion Matrix')
