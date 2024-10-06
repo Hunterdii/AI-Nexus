@@ -9,6 +9,9 @@ import requests
 import time
 import streamlit_lottie as st_lottie
 
+# Disable oneDNN custom operations warning
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+
 # Streamlit page configuration
 st.set_page_config(page_title="CIFAR-10 Image Classification", page_icon="🖼️", layout="wide")
 
@@ -21,11 +24,12 @@ def load_lottie_url(url: str):
 
 # Lottie Animation
 lottie_url = "https://lottie.host/de06d967-8825-499e-aa8c-a88dd15e1a08/dH2OtlPb3c.json"
+lottie_animation = load_lottie_url(lottie_url)
+
 # lottie_url = "https://lottie.host/cb54b283-5df4-4a94-b096-f20609d6cedd/OieGG3bmfC.json"  # Replace with your Lottie URL
 # lottie_url = "https://lottie.host/93d88d16-07db-49ec-88dd-6d9d61060502/w2kjPNdxKk.json"  # Replace with your Lottie URL
 # lottie_url = "https://lottie.host/02b428b5-0ba4-4059-bc6f-acea19d2d1d7/4QgxxvnOEh.json"  # Replace with your Lottie URL
 # lottie_url = "https://lottie.host/a8aaf165-c79f-4286-be91-c340a8c81074/re1wEpOwh4.json"  # Replace with your Lottie URL
-lottie_animation = load_lottie_url(lottie_url)
 
 # Sidebar with unique elements
 with st.sidebar:
@@ -94,12 +98,14 @@ class_names = [
 @st.cache_resource
 def load_my_model():
     model = tf.keras.models.load_model("ObjexVision/final_model1.h5")
+    # Compile the model (use the optimizer and loss you trained with)
+    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     return model
 
 model = load_my_model()
 
 # Main title with cool text effect
-st.markdown("""
+st.markdown(""" 
     <h1 style="text-align:center; color: #007bff; font-family: 'Courier New', Courier, monospace; animation: glow 2s ease-in-out infinite alternate;">
     🖼️ CIFAR-10 Image Classification
     </h1>
@@ -161,15 +167,6 @@ if image_file is not None:
 
         st.success(result)
 
-        # Show confidence meter with cool design
-        # st.markdown(f"""
-        # <div class="confidence-bar">
-        #     <div class="confidence-fill" style="width:{confidence*100}%; background-color: {'#4caf50' if confidence >= confidence_threshold else '#ff5722'}">
-        #         {confidence*100:.2f}% confident
-        #     </div>
-        # </div>
-        # """, unsafe_allow_html=True)
-
         os.remove(img_path)
 
 # Add unique progress bar for better interactivity
@@ -195,11 +192,9 @@ st.markdown("""
 data = {
     "Class": class_names,
     "Accuracy": [0.89, 0.85, 0.78, 0.92, 0.80, 0.76, 0.83, 0.88, 0.90, 0.81],
-    "Precision": [0.87, 0.82, 0.77, 0.91, 0.79, 0.75, 0.81, 0.86, 0.89, 0.80]
+    "Precision": [0.87, 0.82, 0.77, 0.91, 0.79, 0.75, 0.81, 0.87, 0.88, 0.80],
 }
-df = pd.DataFrame(data)
 
-# Stylish DataFrame
-st.markdown("### CIFAR-10 Class Performance")
-styled_table = df.style.background_gradient(cmap="coolwarm", subset=['Accuracy', 'Precision'])
-st.dataframe(styled_table, height=400)
+performance_df = pd.DataFrame(data)
+st.write(performance_df)
+
