@@ -1,72 +1,3 @@
-# import pandas as pd
-# import numpy as np
-# from sklearn.neighbors import KNeighborsClassifier
-# from sklearn.model_selection import train_test_split
-# from sklearn.preprocessing import StandardScaler
-# import pickle
-# import streamlit as st
-# import joblib
-# import matplotlib.pyplot as plt
-# import seaborn as sns
-
-# # Load the dataset
-# dataset = pd.read_csv("Iris.csv")
-
-# # Prepare the features and target variable
-# x = dataset.drop(["Species", "Id"], axis=1)
-# y = dataset["Species"]
-# x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
-
-# # Initialize and train the KNN classifier
-# knn = KNeighborsClassifier(n_neighbors=3)
-# knn.fit(x_train, y_train)
-
-# # Save the model
-# pickle_out = open("classifier.pkl", "wb")
-# pickle.dump(knn, pickle_out)
-# pickle_out.close()
-
-# # Streamlit UI
-# st.set_page_config(page_title="Iris Species Predictor", page_icon="🌸", layout="wide")
-# st.title("🌼 Iris Species Prediction App")
-
-# st.markdown("""
-#     Welcome to the Iris Species Prediction app! Enter the details below to predict the species of an Iris flower based on its features.
-#     This application uses a K-Nearest Neighbors classification model to predict the species.
-# """)
-
-# # Input form
-# with st.form("prediction_form"):
-#     Sepal_length = st.number_input("Sepal Length (cm)", min_value=0.0, value=5.0, step=0.1)
-#     Sepal_width = st.number_input("Sepal Width (cm)", min_value=0.0, value=3.0, step=0.1)
-#     Petal_length = st.number_input("Petal Length (cm)", min_value=0.0, value=1.5, step=0.1)
-#     Petal_width = st.number_input("Petal Width (cm)", min_value=0.0, value=0.2, step=0.1)
-#     submit_button = st.form_submit_button(label='Predict Species')
-    
-# # Prediction and output
-# if submit_button:
-#     model = joblib.load("classifier.pkl")
-#     x = np.array([Sepal_length, Sepal_width, Petal_length, Petal_width])
-#     if any(x <= 0):
-#         st.warning("⚠️ Input values must be greater than 0")
-#     else:
-#         prediction = model.predict([x])
-#         st.success(f"🌷 Predicted Species: **{prediction[0]}**")
-
-# # Data visualization
-# st.markdown("### 🌸 Dataset Overview & Visualization")
-# st.write(dataset.head())
-
-# # Pairplot
-# st.markdown("#### Pairplot of Iris Features")
-# sns.pairplot(dataset, hue="Species", palette="viridis")
-# st.pyplot(plt)
-
-# # Model performance metrics
-# st.markdown("### 📈 Model Performance")
-# st.markdown(f"**Train Set Accuracy:** {knn.score(x_train, y_train):.2f}")
-# st.markdown(f"**Test Set Accuracy:** {knn.score(x_test, y_test):.2f}")
-
 import streamlit as st
 import joblib
 import numpy as np
@@ -244,11 +175,12 @@ with st.form("prediction_form"):
 if submit_button:
     with st.spinner("Predicting..."):
         model = joblib.load("Iriswise/classifier.pkl")
-        x_input = np.array([Sepal_length, Sepal_width, Petal_length, Petal_width])
-        if any(x_input <= 0):
+        x_input = pd.DataFrame([[Sepal_length, Sepal_width, Petal_length, Petal_width]], 
+                               columns=x.columns)
+        if any(x_input.values[0] <= 0):
             st.warning("⚠️ Input values must be greater than 0")
         else:
-            prediction = model.predict([x_input])
+            prediction = model.predict(x_input)
             
             species_images = {
                 'Iris-setosa': 'Iriswise/assets/Irissetosa1.jpg',

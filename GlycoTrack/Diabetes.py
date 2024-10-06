@@ -170,8 +170,8 @@ if submit_button:
     if Glucose <= 0:
         st.warning("Glucose level cannot be zero or negative.")
     else:
-        input_data = np.array([Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age])
-        input_data = input_data.reshape(1, -1)
+        input_data = pd.DataFrame([[Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age]], 
+                                  columns=X.columns)
         input_data = poly.transform(scaler.transform(input_data))
         prediction = model.predict(input_data)
         
@@ -180,6 +180,7 @@ if submit_button:
         
         result = "Positive for Diabetes" if prediction[0] == 1 else "Negative for Diabetes"
         st.success(f"🎉 Prediction: **{result}**")
+
 
 # Show dataset overview and pairplot
 if show_dataset:
