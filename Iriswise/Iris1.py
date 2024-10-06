@@ -172,22 +172,31 @@ with st.form("prediction_form"):
     submit_button = st.form_submit_button(label='🌟 Predict Species')
 
 # Prediction and output
+# Streamlit App Script
+
+# Prediction and output
 if submit_button:
     with st.spinner("Predicting..."):
+        # Load the newly saved model
         model = joblib.load("Iriswise/classifier.pkl")
+        
+        # Process the input and predict
         x_input = pd.DataFrame([[Sepal_length, Sepal_width, Petal_length, Petal_width]], 
                                columns=x.columns)
+        
+        # Handle invalid input
         if any(x_input.values[0] <= 0):
             st.warning("⚠️ Input values must be greater than 0")
         else:
+            # Make prediction
             prediction = model.predict(x_input)
             
+            # Display the prediction with image
             species_images = {
                 'Iris-setosa': 'Iriswise/assets/Irissetosa1.jpg',
                 'Iris-versicolor': 'Iriswise/assets/Versicolor.webp',
                 'Iris-virginica': 'Iriswise/assets/virgina.jpg'
             }
-            
             st.success(f"🎉 Predicted Species: **{prediction[0]}**")
             st.image(species_images[prediction[0]], caption=f'Iris {prediction[0]}', use_column_width=True)
 
